@@ -32,6 +32,8 @@ class SecCrawler():
         for j in range(len(doc_list)):
             base_url = doc_list[j]
             r = requests.get(base_url)
+            print 'base_url'
+            print r.content
             data = r.text
             path = os.path.join(DEFAULT_DATA_PATH, company_code, cik,
                 filing_type, doc_name_list[j])
@@ -69,8 +71,9 @@ class SecCrawler():
         print ("started 10-K " + str(company_code))
 
         r = requests.get(base_url)
+        #print r.content this is an xml file with a bunch of links
         data = r.text
-
+        #print data same as r.content
         # get doc list data
         doc_list, doc_name_list = self.create_document_list(data)
 
@@ -93,6 +96,8 @@ class SecCrawler():
         print ("started 8-K" + str(company_code))
         r = requests.get(base_url)
         data = r.text
+        '''scott check here to see if the data can be saved as html'''
+
 
         # get doc list data
         doc_list, doc_name_list = self.create_document_list(data)
@@ -148,6 +153,11 @@ class SecCrawler():
         # List of document names
         doc_name_list = list()
 
+        print '*'*20
+        print 'link_list_final'
+        for l in link_list_final:
+            print l
+
         # Get all the doc
         for k in range(len(link_list_final)):
             required_url = link_list_final[k].replace('-index.html', '')
@@ -155,5 +165,15 @@ class SecCrawler():
             docname = txtdoc.split("/")[-1]
             doc_list.append(txtdoc)
             doc_name_list.append(docname)
+
+        print '*'*20
+        print 'doc_list'
+        for item in doc_list:
+            print item
+
+        print '*'*20
+        print 'doc_name_list'
+        for item in doc_name_list:
+            print item
         return doc_list, doc_name_list
 
